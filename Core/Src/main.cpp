@@ -18,10 +18,15 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <math.h>
+#include <encoder.hpp>
+#include "stdio.h"
+#include "math.h"
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,21 +48,82 @@
 CAN_HandleTypeDef hcan;
 
 TIM_HandleTypeDef htim1;
+TIM_HandleTypeDef htim6;
 
-UART_HandleTypeDef huart2;
-
+/* Definitions for defaultTask */
+osThreadId_t defaultTaskHandle;
+const osThreadAttr_t defaultTask_attributes = {
+  .name = "defaultTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
 /* USER CODE BEGIN PV */
+osThreadId_t encoderTaskHandle;
+const osThreadAttr_t encoderTask_attributes = {
+  .name = "encoderTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
 
+osThreadId_t switchTaskHandle;
+const osThreadAttr_t switchTask_attributes = {
+  .name = "switchTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_CAN_Init(void);
-static void MX_USART2_UART_Init(void);
 static void MX_TIM1_Init(void);
-/* USER CODE BEGIN PFP */
+static void MX_TIM6_Init(void);
+void StartDefaultTask(void *argument);
+void StartEncoderTask(void *argument);
+void StartSwitchTask(void *argument);
 
+/* USER CODE BEGIN PFP */
+const int CAN_RECEIVE_ID[] = {0x200, 0x1FF};
+#define MIN_CAN_SEND_ID 0x201
+
+int output = 0;
+int CAN_output = 0;
+int my_id = 0;
+#define max_deff 40000
+#define max_id 8
+#define led_flip_time 1000
+#define id_ch_interval 1000000
+
+Encoder Enco(encoderA_GPIO_Port,encoderA_Pin,encoderB_GPIO_Port,encoderB_Pin,200);
+
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
+  CAN_RxHeaderTypeDef rxHeader;
+  uint8_t rxData[8];
+  int16_t Data[4];
+  if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rxHeader, rxData) == HAL_OK)
+	{
+		if(rxHeader.StdId == CAN_RECEIVE_ID[0] && my_id < 4){
+      char data[8] = {rxData[1],rxData[0],rxData[3],rxData[2],rxData[5],rxData[4],rxData[6],rxData[7]};
+      memcpy(Data,data,8);
+      CAN_output = Data[my_id];
+    } 
+    else if(rxHeader.StdId == CAN_RECEIVE_ID[1]){
+      char data[8] = {rxData[1],rxData[0],rxData[3],rxData[2],rxData[5],rxData[4],rxData[6],rxData[7]};
+      memcpy(Data,data,8);
+      CAN_output = Data[my_id-4];
+    }
+	}
+}
+
+void TIM6_DAC_IRQHandler(void){
+  Enco.TimCallBack();
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  Enco.PinCallBack(GPIO_Pin);
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -95,21 +161,56 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_CAN_Init();
-  MX_USART2_UART_Init();
   MX_TIM1_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_2);
-  int count = 100;
+
   /* USER CODE END 2 */
+
+  /* Init scheduler */
+  osKernelInitialize();
+
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* add semaphores, ... */
+  /* USER CODE END RTOS_SEMAPHORES */
+
+  /* USER CODE BEGIN RTOS_TIMERS */
+  /* start timers, add new ones, ... */
+  /* USER CODE END RTOS_TIMERS */
+
+  /* USER CODE BEGIN RTOS_QUEUES */
+  /* add queues, ... */
+  /* USER CODE END RTOS_QUEUES */
+
+  /* Create the thread(s) */
+  /* creation of defaultTask */
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+
+  /* USER CODE BEGIN RTOS_THREADS */
+  encoderTaskHandle = osThreadNew(StartEncoderTask, NULL, &encoderTask_attributes);
+  switchTaskHandle = osThreadNew(StartSwitchTask, NULL, &switchTask_attributes);
+  /* add threads, ... */
+  /* USER CODE END RTOS_THREADS */
+
+  /* USER CODE BEGIN RTOS_EVENTS */
+  /* add events, ... */
+  /* USER CODE END RTOS_EVENTS */
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, count);
-    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, count);
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -233,7 +334,7 @@ static void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_TIM_OC_Init(&htim1) != HAL_OK)
+  if (HAL_TIM_PWM_Init(&htim1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -244,18 +345,18 @@ static void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
-  sConfigOC.OCMode = TIM_OCMODE_TIMING;
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
   sConfigOC.Pulse = 0;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
-  if (HAL_TIM_OC_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
   {
     Error_Handler();
   }
-  if (HAL_TIM_OC_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
   {
     Error_Handler();
   }
@@ -282,37 +383,40 @@ static void MX_TIM1_Init(void)
 }
 
 /**
-  * @brief USART2 Initialization Function
+  * @brief TIM6 Initialization Function
   * @param None
   * @retval None
   */
-static void MX_USART2_UART_Init(void)
+static void MX_TIM6_Init(void)
 {
 
-  /* USER CODE BEGIN USART2_Init 0 */
+  /* USER CODE BEGIN TIM6_Init 0 */
 
-  /* USER CODE END USART2_Init 0 */
+  /* USER CODE END TIM6_Init 0 */
 
-  /* USER CODE BEGIN USART2_Init 1 */
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
 
-  /* USER CODE END USART2_Init 1 */
-  huart2.Instance = USART2;
-  huart2.Init.BaudRate = 38400;
-  huart2.Init.WordLength = UART_WORDLENGTH_8B;
-  huart2.Init.StopBits = UART_STOPBITS_1;
-  huart2.Init.Parity = UART_PARITY_NONE;
-  huart2.Init.Mode = UART_MODE_TX_RX;
-  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  if (HAL_UART_Init(&huart2) != HAL_OK)
+  /* USER CODE BEGIN TIM6_Init 1 */
+
+  /* USER CODE END TIM6_Init 1 */
+  htim6.Instance = TIM6;
+  htim6.Init.Prescaler = 0;
+  htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim6.Init.Period = 64000;
+  htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN USART2_Init 2 */
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim6, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM6_Init 2 */
 
-  /* USER CODE END USART2_Init 2 */
+  /* USER CODE END TIM6_Init 2 */
 
 }
 
@@ -333,20 +437,26 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, phase_Pin|sr_Pin|LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : encoderA_Pin encoderB_Pin encoderZ_Pin */
   GPIO_InitStruct.Pin = encoderA_Pin|encoderB_Pin|encoderZ_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PB0 PB1 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
+  /*Configure GPIO pins : phase_Pin sr_Pin LED_Pin */
+  GPIO_InitStruct.Pin = phase_Pin|sr_Pin|LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Button_Pin */
+  GPIO_InitStruct.Pin = Button_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Button_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
@@ -354,8 +464,110 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void StartEncoderTask(void *argument)
+{
+  for(;;)
+  {
+    CAN_TxHeaderTypeDef TxHeader;
+    uint32_t TxMailbox;
+    if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan) <= 0) continue;
+    uint16_t S[4];
+    S[0] = Enco.get_degree();
+    S[1] = Enco.get_rpm();
+    S[2] = 0;
+    S[3] = 0;
+    uint8_t b[8];
+    memcpy((char*)b, S, 8);
+    uint8_t send[8] = {b[1], b[0], b[3],b[2],b[5],b[4],b[7],b[6]};
+    
+    TxHeader.StdId = MIN_CAN_SEND_ID+my_id;// 受取手のCANのID
+    TxHeader.RTR = CAN_RTR_DATA;
+    TxHeader.IDE = CAN_ID_STD;
+    TxHeader.DLC = 8;//データ長を8byteに設定
+    TxHeader.TransmitGlobalTime = DISABLE;
 
+    if (HAL_CAN_AddTxMessage(&hcan, &TxHeader, send, &TxMailbox) != HAL_OK) {
+        continue;
+    }
+    osDelay(1);
+  }
+}
+
+void StartSwitchTask(void *argument)
+{
+  bool sw_state = false;
+  int count_led = 0;
+  for(;;)
+  {
+    bool state_ = HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin);
+    if(!sw_state & state_){
+      sw_state = state_;
+      int ch_id_count = id_ch_interval;
+      int id_ = -1;
+      while(ch_id_count){
+        bool state_ = HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin);
+        if(!sw_state & state_){
+          id_++;
+          ch_id_count = id_ch_interval;
+        }
+        sw_state = state_;
+        ch_id_count --;
+        osDelay(1);
+      }
+      if((id_ > 0) && (id_ < max_id))my_id = id_;
+      count_led = 0;
+    }
+    
+    if(int(count_led/led_flip_time)%2 == 0 && int(count_led/led_flip_time) < my_id){
+      HAL_GPIO_WritePin(LED_GPIO_Port,LED_Pin,GPIO_PIN_SET);
+    }else{
+      HAL_GPIO_WritePin(LED_GPIO_Port,LED_Pin,GPIO_PIN_RESET);
+    }
+
+    if(int(count_led/led_flip_time) > max_id*2)count_led = 0;
+    else count_led++;
+    osDelay(1);
+  }
+  /* USER CODE END 5 */
+}
 /* USER CODE END 4 */
+
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void *argument)
+{
+  /* USER CODE BEGIN 5 */
+  osDelay(500);
+  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);//pwm high
+  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_2);//pwm high
+  __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 65535);
+  HAL_GPIO_WritePin(sr_GPIO_Port,sr_Pin,GPIO_PIN_SET);
+  HAL_GPIO_WritePin(phase_GPIO_Port,phase_Pin,GPIO_PIN_RESET);
+  /* Infinite loop */
+  for(;;)
+  {
+    if(output > 0)
+      HAL_GPIO_WritePin(phase_GPIO_Port,phase_Pin,GPIO_PIN_RESET);
+    else
+      HAL_GPIO_WritePin(phase_GPIO_Port,phase_Pin,GPIO_PIN_SET);
+    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, abs(2*output));
+    
+    if(CAN_output-output > max_deff){
+      output += max_deff;
+    }else if(CAN_output-output < -max_deff){
+      output -= max_deff;
+    }else{
+      output = CAN_output;
+    }
+    osDelay(1);
+  }
+  /* USER CODE END 5 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.

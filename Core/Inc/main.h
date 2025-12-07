@@ -65,6 +65,18 @@ void Error_Handler(void);
 #define encoderB_GPIO_Port GPIOA
 #define encoderZ_Pin GPIO_PIN_5
 #define encoderZ_GPIO_Port GPIOA
+#define phase_Pin GPIO_PIN_0
+#define phase_GPIO_Port GPIOB
+#define sr_Pin GPIO_PIN_1
+#define sr_GPIO_Port GPIOB
+#define pwmH_Pin GPIO_PIN_8
+#define pwmH_GPIO_Port GPIOA
+#define pwmL_Pin GPIO_PIN_9
+#define pwmL_GPIO_Port GPIOA
+#define Button_Pin GPIO_PIN_4
+#define Button_GPIO_Port GPIOB
+#define LED_Pin GPIO_PIN_5
+#define LED_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
