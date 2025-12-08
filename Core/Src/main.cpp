@@ -92,8 +92,8 @@ int CAN_output = 0;
 int my_id = 0;
 #define max_deff 40000
 #define max_id 8
-#define led_flip_time 1000
-#define id_ch_interval 1000000
+#define led_flip_time 150
+#define id_ch_interval 3000
 
 Encoder Enco(encoderA_GPIO_Port,encoderA_Pin,encoderB_GPIO_Port,encoderB_Pin,200);
 
@@ -499,26 +499,29 @@ void StartSwitchTask(void *argument)
   int count_led = 0;
   for(;;)
   {
-    bool state_ = HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin);
+    bool state_ = !HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin);
     if(!sw_state & state_){
+      HAL_GPIO_WritePin(LED_GPIO_Port,LED_Pin,GPIO_PIN_RESET);
       sw_state = state_;
       int ch_id_count = id_ch_interval;
       int id_ = -1;
       while(ch_id_count){
-        bool state_ = HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin);
+        osDelay(1);
+        bool state_ = !HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin);
         if(!sw_state & state_){
           id_++;
           ch_id_count = id_ch_interval;
         }
         sw_state = state_;
         ch_id_count --;
-        osDelay(1);
       }
-      if((id_ > 0) && (id_ < max_id))my_id = id_;
+      if(0 < id_ && id_ < max_id){
+        my_id = id_;
+      }
       count_led = 0;
     }
-    
-    if(int(count_led/led_flip_time)%2 == 0 && int(count_led/led_flip_time) < my_id){
+    sw_state = state_;
+    if(int(count_led/led_flip_time)%2 == 0 && int(count_led/led_flip_time) <= my_id*2){
       HAL_GPIO_WritePin(LED_GPIO_Port,LED_Pin,GPIO_PIN_SET);
     }else{
       HAL_GPIO_WritePin(LED_GPIO_Port,LED_Pin,GPIO_PIN_RESET);

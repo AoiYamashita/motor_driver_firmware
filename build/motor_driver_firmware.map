@@ -1931,7 +1931,7 @@ LOAD /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtn.o
                 0x08000000                g_pfnVectors
                 0x08000188                        . = ALIGN (0x4)
 
-.text           0x08000190     0x4684
+.text           0x08000190     0x4688
                 0x08000190                        . = ALIGN (0x4)
  *(.text)
  .text          0x08000190       0x88 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
@@ -2396,182 +2396,182 @@ LOAD /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtn.o
                 0x080041f8       0xa0 build/main.o
                 0x080041f8                StartEncoderTask(void*)
  .text._Z15StartSwitchTaskPv
-                0x08004298       0xb8 build/main.o
+                0x08004298       0xbc build/main.o
                 0x08004298                StartSwitchTask(void*)
  .text._Z16StartDefaultTaskPv
-                0x08004350       0xb8 build/main.o
-                0x08004350                StartDefaultTask(void*)
+                0x08004354       0xb8 build/main.o
+                0x08004354                StartDefaultTask(void*)
  .text._Z41__static_initialization_and_destruction_0v
-                0x08004408       0x24 build/main.o
+                0x0800440c       0x24 build/main.o
  .text.HAL_CAN_RxFifo0MsgPendingCallback
-                0x0800442c       0xf4 build/main.o
-                0x0800442c                HAL_CAN_RxFifo0MsgPendingCallback
+                0x08004430       0xf4 build/main.o
+                0x08004430                HAL_CAN_RxFifo0MsgPendingCallback
  .text.Error_Handler
-                0x08004520        0x4 build/main.o
-                0x08004520                Error_Handler
+                0x08004524        0x4 build/main.o
+                0x08004524                Error_Handler
  .text._ZL11MX_CAN_Initv
-                0x08004524       0x3c build/main.o
+                0x08004528       0x3c build/main.o
  .text._ZL12MX_TIM1_Initv
-                0x08004560       0xfc build/main.o
+                0x08004564       0xfc build/main.o
  .text._ZL12MX_TIM6_Initv
-                0x0800465c       0x4c build/main.o
+                0x08004660       0x4c build/main.o
  .text._Z18SystemClock_Configv
-                0x080046a8       0x84 build/main.o
-                0x080046a8                SystemClock_Config()
- .text.main     0x0800472c       0x74 build/main.o
-                0x0800472c                main
+                0x080046ac       0x84 build/main.o
+                0x080046ac                SystemClock_Config()
+ .text.main     0x08004730       0x74 build/main.o
+                0x08004730                main
  .text._GLOBAL__sub_I_hcan
-                0x080047a0        0x8 build/main.o
+                0x080047a4        0x8 build/main.o
  .text.Reset_Handler
-                0x080047a8       0x50 build/startup_stm32f334x8.o
-                0x080047a8                Reset_Handler
+                0x080047ac       0x50 build/startup_stm32f334x8.o
+                0x080047ac                Reset_Handler
  .text.Default_Handler
-                0x080047f8        0x2 build/startup_stm32f334x8.o
-                0x080047f8                RTC_Alarm_IRQHandler
-                0x080047f8                HRTIM1_Master_IRQHandler
-                0x080047f8                TIM1_CC_IRQHandler
-                0x080047f8                HRTIM1_FLT_IRQHandler
-                0x080047f8                PVD_IRQHandler
-                0x080047f8                HRTIM1_TIMD_IRQHandler
-                0x080047f8                TAMP_STAMP_IRQHandler
-                0x080047f8                EXTI3_IRQHandler
-                0x080047f8                EXTI0_IRQHandler
-                0x080047f8                FPU_IRQHandler
-                0x080047f8                TIM1_UP_TIM16_IRQHandler
-                0x080047f8                ADC1_2_IRQHandler
-                0x080047f8                HRTIM1_TIME_IRQHandler
-                0x080047f8                SPI1_IRQHandler
-                0x080047f8                HRTIM1_TIMC_IRQHandler
-                0x080047f8                DMA1_Channel4_IRQHandler
-                0x080047f8                USART3_IRQHandler
-                0x080047f8                DMA1_Channel7_IRQHandler
-                0x080047f8                TIM7_DAC2_IRQHandler
-                0x080047f8                I2C1_EV_IRQHandler
-                0x080047f8                DMA1_Channel6_IRQHandler
-                0x080047f8                TIM3_IRQHandler
-                0x080047f8                RCC_IRQHandler
-                0x080047f8                DMA1_Channel1_IRQHandler
-                0x080047f8                Default_Handler
-                0x080047f8                EXTI15_10_IRQHandler
-                0x080047f8                COMP2_IRQHandler
-                0x080047f8                HRTIM1_TIMA_IRQHandler
-                0x080047f8                EXTI9_5_IRQHandler
-                0x080047f8                RTC_WKUP_IRQHandler
-                0x080047f8                DMA1_Channel5_IRQHandler
-                0x080047f8                EXTI4_IRQHandler
-                0x080047f8                HRTIM1_TIMB_IRQHandler
-                0x080047f8                TIM1_TRG_COM_TIM17_IRQHandler
-                0x080047f8                DMA1_Channel3_IRQHandler
-                0x080047f8                WWDG_IRQHandler
-                0x080047f8                TIM2_IRQHandler
-                0x080047f8                EXTI1_IRQHandler
-                0x080047f8                COMP4_6_IRQHandler
-                0x080047f8                USART2_IRQHandler
-                0x080047f8                DMA1_Channel2_IRQHandler
-                0x080047f8                FLASH_IRQHandler
-                0x080047f8                USART1_IRQHandler
-                0x080047f8                I2C1_ER_IRQHandler
-                0x080047f8                EXTI2_TSC_IRQHandler
-                0x080047f8                TIM1_BRK_TIM15_IRQHandler
+                0x080047fc        0x2 build/startup_stm32f334x8.o
+                0x080047fc                RTC_Alarm_IRQHandler
+                0x080047fc                HRTIM1_Master_IRQHandler
+                0x080047fc                TIM1_CC_IRQHandler
+                0x080047fc                HRTIM1_FLT_IRQHandler
+                0x080047fc                PVD_IRQHandler
+                0x080047fc                HRTIM1_TIMD_IRQHandler
+                0x080047fc                TAMP_STAMP_IRQHandler
+                0x080047fc                EXTI3_IRQHandler
+                0x080047fc                EXTI0_IRQHandler
+                0x080047fc                FPU_IRQHandler
+                0x080047fc                TIM1_UP_TIM16_IRQHandler
+                0x080047fc                ADC1_2_IRQHandler
+                0x080047fc                HRTIM1_TIME_IRQHandler
+                0x080047fc                SPI1_IRQHandler
+                0x080047fc                HRTIM1_TIMC_IRQHandler
+                0x080047fc                DMA1_Channel4_IRQHandler
+                0x080047fc                USART3_IRQHandler
+                0x080047fc                DMA1_Channel7_IRQHandler
+                0x080047fc                TIM7_DAC2_IRQHandler
+                0x080047fc                I2C1_EV_IRQHandler
+                0x080047fc                DMA1_Channel6_IRQHandler
+                0x080047fc                TIM3_IRQHandler
+                0x080047fc                RCC_IRQHandler
+                0x080047fc                DMA1_Channel1_IRQHandler
+                0x080047fc                Default_Handler
+                0x080047fc                EXTI15_10_IRQHandler
+                0x080047fc                COMP2_IRQHandler
+                0x080047fc                HRTIM1_TIMA_IRQHandler
+                0x080047fc                EXTI9_5_IRQHandler
+                0x080047fc                RTC_WKUP_IRQHandler
+                0x080047fc                DMA1_Channel5_IRQHandler
+                0x080047fc                EXTI4_IRQHandler
+                0x080047fc                HRTIM1_TIMB_IRQHandler
+                0x080047fc                TIM1_TRG_COM_TIM17_IRQHandler
+                0x080047fc                DMA1_Channel3_IRQHandler
+                0x080047fc                WWDG_IRQHandler
+                0x080047fc                TIM2_IRQHandler
+                0x080047fc                EXTI1_IRQHandler
+                0x080047fc                COMP4_6_IRQHandler
+                0x080047fc                USART2_IRQHandler
+                0x080047fc                DMA1_Channel2_IRQHandler
+                0x080047fc                FLASH_IRQHandler
+                0x080047fc                USART1_IRQHandler
+                0x080047fc                I2C1_ER_IRQHandler
+                0x080047fc                EXTI2_TSC_IRQHandler
+                0x080047fc                TIM1_BRK_TIM15_IRQHandler
  *(.glue_7)
- .glue_7        0x080047fa        0x0 linker stubs
+ .glue_7        0x080047fe        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x080047fa        0x0 linker stubs
+ .glue_7t       0x080047fe        0x0 linker stubs
  *(.eh_frame)
- *fill*         0x080047fa        0x2 
- .eh_frame      0x080047fc        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+ *fill*         0x080047fe        0x2 
+ .eh_frame      0x08004800        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
  *(.init)
- .init          0x080047fc        0x4 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crti.o
-                0x080047fc                _init
- .init          0x08004800        0x8 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtn.o
+ .init          0x08004800        0x4 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crti.o
+                0x08004800                _init
+ .init          0x08004804        0x8 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtn.o
  *(.fini)
- .fini          0x08004808        0x4 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crti.o
-                0x08004808                _fini
- .fini          0x0800480c        0x8 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtn.o
-                0x08004814                        . = ALIGN (0x4)
-                0x08004814                        _etext = .
+ .fini          0x0800480c        0x4 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crti.o
+                0x0800480c                _fini
+ .fini          0x08004810        0x8 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtn.o
+                0x08004818                        . = ALIGN (0x4)
+                0x08004818                        _etext = .
 
-.vfp11_veneer   0x08004814        0x0
- .vfp11_veneer  0x08004814        0x0 linker stubs
+.vfp11_veneer   0x08004818        0x0
+ .vfp11_veneer  0x08004818        0x0 linker stubs
 
-.v4_bx          0x08004814        0x0
- .v4_bx         0x08004814        0x0 linker stubs
+.v4_bx          0x08004818        0x0
+ .v4_bx         0x08004818        0x0 linker stubs
 
-.iplt           0x08004814        0x0
- .iplt          0x08004814        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+.iplt           0x08004818        0x0
+ .iplt          0x08004818        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.rodata         0x08004814       0xd8
-                0x08004814                        . = ALIGN (0x4)
+.rodata         0x08004818       0xd8
+                0x08004818                        . = ALIGN (0x4)
  *(.rodata)
  *(.rodata*)
  .rodata.aPredivFactorTable
-                0x08004814       0x10 build/stm32f3xx_hal_rcc.o
+                0x08004818       0x10 build/stm32f3xx_hal_rcc.o
  .rodata.aPLLMULFactorTable
-                0x08004824       0x10 build/stm32f3xx_hal_rcc.o
+                0x08004828       0x10 build/stm32f3xx_hal_rcc.o
  .rodata.AHBPrescTable
-                0x08004834       0x10 build/system_stm32f3xx.o
-                0x08004834                AHBPrescTable
+                0x08004838       0x10 build/system_stm32f3xx.o
+                0x08004838                AHBPrescTable
  .rodata.vTaskStartScheduler.str1.4
-                0x08004844       0x3c build/tasks.o
+                0x08004848       0x3c build/tasks.o
                                   0x5 (size before relaxing)
  .rodata.prvCheckForValidListAndQueue.str1.4
-                0x08004880        0x5 build/timers.o
+                0x08004884        0x5 build/timers.o
  .rodata.xTimerCreateTimerTask.str1.4
-                0x08004880        0x8 build/timers.o
+                0x08004884        0x8 build/timers.o
  .rodata.str1.4
-                0x08004880       0x24 build/main.o
+                0x08004884       0x24 build/main.o
  .rodata._ZL21switchTask_attributes
-                0x08004880       0x24 build/main.o
+                0x08004884       0x24 build/main.o
  .rodata._ZL22encoderTask_attributes
-                0x080048a4       0x24 build/main.o
+                0x080048a8       0x24 build/main.o
  .rodata._ZL22defaultTask_attributes
-                0x080048c8       0x24 build/main.o
-                0x080048ec                        . = ALIGN (0x4)
+                0x080048cc       0x24 build/main.o
+                0x080048f0                        . = ALIGN (0x4)
 
-.ARM.extab      0x080048ec        0x0
-                0x080048ec                        . = ALIGN (0x4)
+.ARM.extab      0x080048f0        0x0
+                0x080048f0                        . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x080048ec                        . = ALIGN (0x4)
+                0x080048f0                        . = ALIGN (0x4)
 
-.ARM            0x080048ec        0x8
-                0x080048ec                        . = ALIGN (0x4)
-                0x080048ec                        __exidx_start = .
+.ARM            0x080048f0        0x8
+                0x080048f0                        . = ALIGN (0x4)
+                0x080048f0                        __exidx_start = .
  *(.ARM.exidx*)
- .ARM.exidx     0x080048ec        0x8 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memcpy.o)
-                0x080048f4                        __exidx_end = .
-                0x080048f4                        . = ALIGN (0x4)
+ .ARM.exidx     0x080048f0        0x8 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memcpy.o)
+                0x080048f8                        __exidx_end = .
+                0x080048f8                        . = ALIGN (0x4)
 
-.preinit_array  0x080048f4        0x0
-                0x080048f4                        . = ALIGN (0x4)
-                0x080048f4                        PROVIDE (__preinit_array_start = .)
+.preinit_array  0x080048f8        0x0
+                0x080048f8                        . = ALIGN (0x4)
+                0x080048f8                        PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x080048f4                        PROVIDE (__preinit_array_end = .)
-                0x080048f4                        . = ALIGN (0x4)
+                0x080048f8                        PROVIDE (__preinit_array_end = .)
+                0x080048f8                        . = ALIGN (0x4)
 
-.init_array     0x080048f4        0x8
-                0x080048f4                        . = ALIGN (0x4)
-                0x080048f4                        PROVIDE (__init_array_start = .)
+.init_array     0x080048f8        0x8
+                0x080048f8                        . = ALIGN (0x4)
+                0x080048f8                        PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x080048f4        0x4 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
- .init_array    0x080048f8        0x4 build/main.o
-                0x080048fc                        PROVIDE (__init_array_end = .)
-                0x080048fc                        . = ALIGN (0x4)
+ .init_array    0x080048f8        0x4 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .init_array    0x080048fc        0x4 build/main.o
+                0x08004900                        PROVIDE (__init_array_end = .)
+                0x08004900                        . = ALIGN (0x4)
 
-.fini_array     0x080048fc        0x4
-                0x080048fc                        . = ALIGN (0x4)
-                0x080048fc                        PROVIDE (__fini_array_start = .)
+.fini_array     0x08004900        0x4
+                0x08004900                        . = ALIGN (0x4)
+                0x08004900                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x080048fc        0x4 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
-                0x08004900                        PROVIDE (__fini_array_end = .)
-                0x08004900                        . = ALIGN (0x4)
-                0x08004900                        _sidata = LOADADDR (.data)
+ .fini_array    0x08004900        0x4 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x08004904                        PROVIDE (__fini_array_end = .)
+                0x08004904                        . = ALIGN (0x4)
+                0x08004904                        _sidata = LOADADDR (.data)
 
-.rel.dyn        0x08004900        0x0
- .rel.iplt      0x08004900        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+.rel.dyn        0x08004904        0x0
+ .rel.iplt      0x08004904        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.data           0x20000000       0x10 load address 0x08004900
+.data           0x20000000       0x10 load address 0x08004904
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sdata = .
  *(.data)
@@ -2592,19 +2592,19 @@ LOAD /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtn.o
  *(.RamFunc*)
                 0x20000010                        . = ALIGN (0x4)
                 0x20000010                        _edata = .
-                0x08004910                        _siccmram = LOADADDR (.ccmram)
+                0x08004914                        _siccmram = LOADADDR (.ccmram)
 
 .tm_clone_table
-                0x20000010        0x0 load address 0x08004910
+                0x20000010        0x0 load address 0x08004914
  .tm_clone_table
                 0x20000010        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
  .tm_clone_table
                 0x20000010        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtend.o
 
-.igot.plt       0x20000010        0x0 load address 0x08004910
+.igot.plt       0x20000010        0x0 load address 0x08004914
  .igot.plt      0x20000010        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.ccmram         0x10000000        0x0 load address 0x08004910
+.ccmram         0x10000000        0x0 load address 0x08004914
                 0x10000000                        . = ALIGN (0x4)
                 0x10000000                        _sccmram = .
  *(.ccmram)
@@ -2844,7 +2844,7 @@ LOAD /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a
  .comment       0x00000026       0x27 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memset.o)
  .comment       0x00000026       0x27 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/crtend.o
 
-.debug_info     0x00000000    0x1f27d
+.debug_info     0x00000000    0x1f29f
  .debug_info    0x00000000      0xcee build/stm32f3xx_it.o
  .debug_info    0x00000cee     0x12cb build/stm32f3xx_hal_msp.o
  .debug_info    0x00001fb9     0x1368 build/stm32f3xx_hal_can.o
@@ -2864,11 +2864,11 @@ LOAD /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a
  .debug_info    0x0001a053      0x47b build/heap_4.o
  .debug_info    0x0001a4ce      0x5aa build/port.o
  .debug_info    0x0001aa78      0x6b0 build/encoder.o
- .debug_info    0x0001b128     0x3eb2 build/main.o
- .debug_info    0x0001efda       0x30 build/startup_stm32f334x8.o
- .debug_info    0x0001f00a      0x10b /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-init.o)
- .debug_info    0x0001f115      0x135 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memset.o)
- .debug_info    0x0001f24a       0x33 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memcpy.o)
+ .debug_info    0x0001b128     0x3ed4 build/main.o
+ .debug_info    0x0001effc       0x30 build/startup_stm32f334x8.o
+ .debug_info    0x0001f02c      0x10b /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-init.o)
+ .debug_info    0x0001f137      0x135 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memset.o)
+ .debug_info    0x0001f26c       0x33 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memcpy.o)
 
 .debug_abbrev   0x00000000     0x3ad6
  .debug_abbrev  0x00000000      0x1d8 build/stm32f3xx_it.o
@@ -2896,7 +2896,7 @@ LOAD /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a
  .debug_abbrev  0x000039f7       0xb7 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memset.o)
  .debug_abbrev  0x00003aae       0x28 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memcpy.o)
 
-.debug_loc      0x00000000    0x1a242
+.debug_loc      0x00000000    0x1a252
  .debug_loc     0x00000000       0xc0 build/stm32f3xx_it.o
  .debug_loc     0x000000c0      0x2ca build/stm32f3xx_hal_msp.o
  .debug_loc     0x0000038a     0x10d3 build/stm32f3xx_hal_can.o
@@ -2916,7 +2916,7 @@ LOAD /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a
  .debug_loc     0x0001952c      0x3f3 build/heap_4.o
  .debug_loc     0x0001991f      0x1c6 build/port.o
  .debug_loc     0x00019ae5      0x2b8 build/encoder.o
- .debug_loc     0x00019d9d      0x4a5 build/main.o
+ .debug_loc     0x00019d9d      0x4b5 build/main.o
 
 .debug_aranges  0x00000000     0x12f8
  .debug_aranges
@@ -2968,7 +2968,7 @@ LOAD /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a
  .debug_aranges
                 0x000012d8       0x20 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memcpy.o)
 
-.debug_ranges   0x00000000     0x13d8
+.debug_ranges   0x00000000     0x13e0
  .debug_ranges  0x00000000       0x68 build/stm32f3xx_it.o
  .debug_ranges  0x00000068       0x38 build/stm32f3xx_hal_msp.o
  .debug_ranges  0x000000a0      0x128 build/stm32f3xx_hal_can.o
@@ -2988,10 +2988,10 @@ LOAD /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a
  .debug_ranges  0x000011f0       0x40 build/heap_4.o
  .debug_ranges  0x00001230       0x88 build/port.o
  .debug_ranges  0x000012b8       0x38 build/encoder.o
- .debug_ranges  0x000012f0       0xc8 build/main.o
- .debug_ranges  0x000013b8       0x20 build/startup_stm32f334x8.o
+ .debug_ranges  0x000012f0       0xd0 build/main.o
+ .debug_ranges  0x000013c0       0x20 build/startup_stm32f334x8.o
 
-.debug_line     0x00000000    0x1430d
+.debug_line     0x00000000    0x14315
  .debug_line    0x00000000      0x32b build/stm32f3xx_it.o
  .debug_line    0x0000032b      0x313 build/stm32f3xx_hal_msp.o
  .debug_line    0x0000063e     0x109c build/stm32f3xx_hal_can.o
@@ -3011,11 +3011,11 @@ LOAD /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a
  .debug_line    0x0001259b      0x551 build/heap_4.o
  .debug_line    0x00012aec      0x59e build/port.o
  .debug_line    0x0001308a      0x2c8 build/encoder.o
- .debug_line    0x00013352      0xbbb build/main.o
- .debug_line    0x00013f0d       0x73 build/startup_stm32f334x8.o
- .debug_line    0x00013f80      0x11e /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-init.o)
- .debug_line    0x0001409e      0x1b6 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memset.o)
- .debug_line    0x00014254       0xb9 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memcpy.o)
+ .debug_line    0x00013352      0xbc3 build/main.o
+ .debug_line    0x00013f15       0x73 build/startup_stm32f334x8.o
+ .debug_line    0x00013f88      0x11e /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-init.o)
+ .debug_line    0x000140a6      0x1b6 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memset.o)
+ .debug_line    0x0001425c       0xb9 /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-memcpy.o)
 
 .debug_str      0x00000000     0x7723
  .debug_str     0x00000000     0x7723 build/stm32f3xx_it.o
