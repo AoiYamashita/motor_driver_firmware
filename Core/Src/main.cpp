@@ -80,17 +80,18 @@ static void MX_CAN_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_TIM6_Init(void);
 void StartDefaultTask(void *argument);
+
+/* USER CODE BEGIN PFP */
 void StartEncoderTask(void *argument);
 void StartSwitchTask(void *argument);
 
-/* USER CODE BEGIN PFP */
 const int CAN_RECEIVE_ID[] = {0x200, 0x1FF};
 #define MIN_CAN_SEND_ID 0x201
 
 int output = 0;
 int CAN_output = 0;
 int my_id = 0;
-#define max_deff 40000
+#define max_deff 250
 #define max_id 8
 #define led_flip_time 150
 #define id_ch_interval 3000
@@ -106,28 +107,60 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
 		if(rxHeader.StdId == CAN_RECEIVE_ID[0] && my_id < 4){
       char data[8] = {rxData[1],rxData[0],rxData[3],rxData[2],rxData[5],rxData[4],rxData[6],rxData[7]};
       memcpy(Data,data,8);
-      CAN_output = Data[my_id];
+      CAN_output = abs(Data[my_id]) > 10000 ? 10000 : Data[my_id];
     } 
-    else if(rxHeader.StdId == CAN_RECEIVE_ID[1]){
+    else if(rxHeader.StdId == CAN_RECEIVE_ID[1] && my_id >= 4){
       char data[8] = {rxData[1],rxData[0],rxData[3],rxData[2],rxData[5],rxData[4],rxData[6],rxData[7]};
       memcpy(Data,data,8);
-      CAN_output = Data[my_id-4];
+      CAN_output = abs(Data[my_id-4]) > 10000 ? 10000 : Data[my_id-4];
     }
 	}
 }
 
-void TIM6_DAC_IRQHandler(void){
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
   Enco.TimCallBack();
 }
 
+
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+  // HAL_GPIO_TogglePin(LED_GPIO_Port,LED_Pin);
   Enco.PinCallBack(GPIO_Pin);
 }
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+#define FLASH_USER_START_ADDR  ((uint32_t)0x0800FC00) // 最後の1KB（64KB - 1KB）
+
+void Flash_Write_ID(uint32_t id)
+{
+  HAL_FLASH_Unlock();
+
+  // セクタ消去（1KB単位）
+  FLASH_EraseInitTypeDef eraseInit;
+  uint32_t pageError = 0;
+  eraseInit.TypeErase = FLASH_TYPEERASE_PAGES;
+  eraseInit.PageAddress = FLASH_USER_START_ADDR;
+  eraseInit.NbPages = 1;
+
+  if (HAL_FLASHEx_Erase(&eraseInit, &pageError) != HAL_OK)
+  {
+    HAL_FLASH_Lock();
+    return;
+  }
+
+  // 書き込み（32bit単位）
+  HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, FLASH_USER_START_ADDR, id);
+
+  HAL_FLASH_Lock();
+}
+
+uint32_t Flash_Read_ID(void)
+{
+  return *(uint32_t*)FLASH_USER_START_ADDR;
+}
 
 /* USER CODE END 0 */
 
@@ -164,7 +197,8 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_Base_Start_IT(&htim6);
+  my_id = Flash_Read_ID();
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -277,10 +311,10 @@ static void MX_CAN_Init(void)
 
   /* USER CODE END CAN_Init 1 */
   hcan.Instance = CAN;
-  hcan.Init.Prescaler = 8;
+  hcan.Init.Prescaler = 2;
   hcan.Init.Mode = CAN_MODE_NORMAL;
   hcan.Init.SyncJumpWidth = CAN_SJW_1TQ;
-  hcan.Init.TimeSeg1 = CAN_BS1_1TQ;
+  hcan.Init.TimeSeg1 = CAN_BS1_13TQ;
   hcan.Init.TimeSeg2 = CAN_BS2_2TQ;
   hcan.Init.TimeTriggeredMode = DISABLE;
   hcan.Init.AutoBusOff = DISABLE;
@@ -293,7 +327,23 @@ static void MX_CAN_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN CAN_Init 2 */
+  CAN_FilterTypeDef sFilterConfig;
+  sFilterConfig.FilterBank = 0;
+  sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
+  sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+  sFilterConfig.FilterIdHigh = 0x0000;
+  sFilterConfig.FilterIdLow = 0x0000;
+  sFilterConfig.FilterMaskIdHigh = 0x0000;
+  sFilterConfig.FilterMaskIdLow = 0x0000;
+  sFilterConfig.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+  sFilterConfig.FilterActivation = ENABLE;
+  sFilterConfig.SlaveStartFilterBank = 0;
+  if (HAL_CAN_ConfigFilter(&hcan, &sFilterConfig) != HAL_OK) {
+      Error_Handler();
+  }
 
+  HAL_CAN_Start(&hcan);
+  HAL_CAN_ActivateNotification(&hcan, CAN_IT_TX_MAILBOX_EMPTY | CAN_IT_RX_FIFO0_MSG_PENDING);
   /* USER CODE END CAN_Init 2 */
 
 }
@@ -321,7 +371,7 @@ static void MX_TIM1_Init(void)
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 0;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 65535;
+  htim1.Init.Period = 10000;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -458,38 +508,51 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(Button_GPIO_Port, &GPIO_InitStruct);
 
-  /* USER CODE BEGIN MX_GPIO_Init_2 */
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI3_IRQn, 7, 0);
+  HAL_NVIC_EnableIRQ(EXTI3_IRQn);
 
+  HAL_NVIC_SetPriority(EXTI4_IRQn, 7, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 7, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
   /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
+
 void StartEncoderTask(void *argument)
 {
+  HAL_GPIO_WritePin(LED_GPIO_Port,LED_Pin,GPIO_PIN_RESET);
   for(;;)
   {
+    osDelay(1);
     CAN_TxHeaderTypeDef TxHeader;
     uint32_t TxMailbox;
-    if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan) <= 0) continue;
-    uint16_t S[4];
+    if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan) <= 0){
+      continue;
+    }
+    int16_t S[4];
     S[0] = Enco.get_degree();
     S[1] = Enco.get_rpm();
-    S[2] = 0;
+    S[2] = 1;
     S[3] = 0;
     uint8_t b[8];
     memcpy((char*)b, S, 8);
     uint8_t send[8] = {b[1], b[0], b[3],b[2],b[5],b[4],b[7],b[6]};
     
-    TxHeader.StdId = MIN_CAN_SEND_ID+my_id;// 受取手のCANのID
+    TxHeader.StdId = MIN_CAN_SEND_ID;// 受取手のCANのID
     TxHeader.RTR = CAN_RTR_DATA;
     TxHeader.IDE = CAN_ID_STD;
     TxHeader.DLC = 8;//データ長を8byteに設定
     TxHeader.TransmitGlobalTime = DISABLE;
 
     if (HAL_CAN_AddTxMessage(&hcan, &TxHeader, send, &TxMailbox) != HAL_OK) {
-        continue;
+      continue;
     }
-    osDelay(1);
   }
 }
 
@@ -515,8 +578,9 @@ void StartSwitchTask(void *argument)
         sw_state = state_;
         ch_id_count --;
       }
-      if(0 < id_ && id_ < max_id){
+      if((id_ < max_id) && (my_id != id_)){
         my_id = id_;
+        Flash_Write_ID(my_id);
       }
       count_led = 0;
     }
@@ -548,7 +612,7 @@ void StartDefaultTask(void *argument)
   osDelay(500);
   HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);//pwm high
   HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_2);//pwm high
-  __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 65535);
+  __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 10000);
   HAL_GPIO_WritePin(sr_GPIO_Port,sr_Pin,GPIO_PIN_SET);
   HAL_GPIO_WritePin(phase_GPIO_Port,phase_Pin,GPIO_PIN_RESET);
   /* Infinite loop */
@@ -558,7 +622,7 @@ void StartDefaultTask(void *argument)
       HAL_GPIO_WritePin(phase_GPIO_Port,phase_Pin,GPIO_PIN_RESET);
     else
       HAL_GPIO_WritePin(phase_GPIO_Port,phase_Pin,GPIO_PIN_SET);
-    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, abs(2*output));
+    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, abs(output));
     
     if(CAN_output-output > max_deff){
       output += max_deff;

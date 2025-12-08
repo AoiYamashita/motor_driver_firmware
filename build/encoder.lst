@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccTjBFLF.s 			page 1
+ARM GAS  /tmp/ccRKoIoI.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccTjBFLF.s 			page 1
   51              		.loc 1 5 5 view .LVU6
   52 000e 8160     		str	r1, [r0, #8]
   53              		.loc 1 5 18 view .LVU7
-ARM GAS  /tmp/ccTjBFLF.s 			page 2
+ARM GAS  /tmp/ccRKoIoI.s 			page 2
 
 
   54 0010 8281     		strh	r2, [r0, #12]	@ movhi
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccTjBFLF.s 			page 1
  103              	.LCFI2:
  104              		.cfi_def_cfa_offset 4
  105              		.cfi_offset 4, -4
-ARM GAS  /tmp/ccTjBFLF.s 			page 3
+ARM GAS  /tmp/ccRKoIoI.s 			page 3
 
 
  106              	.LBB3:
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccTjBFLF.s 			page 1
  153 0036 7047     		bx	lr
  154              		.cfi_endproc
  155              	.LFE127:
-ARM GAS  /tmp/ccTjBFLF.s 			page 4
+ARM GAS  /tmp/ccRKoIoI.s 			page 4
 
 
  157              		.global	_ZN7EncoderC1EP12GPIO_TypeDeftS1_tS1_ti
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccTjBFLF.s 			page 1
  199              		.loc 1 24 5 is_stmt 1 view .LVU46
  200              		.loc 1 24 9 is_stmt 0 view .LVU47
  201 0012 94F82830 		ldrb	r3, [r4, #40]	@ zero_extendqisi2
-ARM GAS  /tmp/ccTjBFLF.s 			page 5
+ARM GAS  /tmp/ccRKoIoI.s 			page 5
 
 
  202              		.loc 1 24 5 view .LVU48
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccTjBFLF.s 			page 1
  241              		.loc 1 17 9 is_stmt 1 view .LVU63
  242 003c 636A     		ldr	r3, [r4, #36]
   17:Core/Src/encoder.cpp ****     }
-ARM GAS  /tmp/ccTjBFLF.s 			page 6
+ARM GAS  /tmp/ccRKoIoI.s 			page 6
 
 
  243              		.loc 1 17 21 is_stmt 0 discriminator 4 view .LVU64
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccTjBFLF.s 			page 1
  284 0070 0122     		movs	r2, #1
  285 0072 F7E7     		b	.L9
  286              	.L16:
-ARM GAS  /tmp/ccTjBFLF.s 			page 7
+ARM GAS  /tmp/ccRKoIoI.s 			page 7
 
 
   26:Core/Src/encoder.cpp ****     }
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccTjBFLF.s 			page 1
  335 0004 006A     		ldr	r0, [r0, #32]
  336              	.LVL15:
  337              		.loc 1 31 22 view .LVU87
-ARM GAS  /tmp/ccTjBFLF.s 			page 8
+ARM GAS  /tmp/ccRKoIoI.s 			page 8
 
 
  338 0006 FFF7FEFF 		bl	__aeabi_i2d
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccTjBFLF.s 			page 1
  389 0054 004CED40 		.word	1089293312
  390              		.cfi_endproc
  391              	.LFE130:
-ARM GAS  /tmp/ccTjBFLF.s 			page 9
+ARM GAS  /tmp/ccRKoIoI.s 			page 9
 
 
  393              		.section	.text._ZN7Encoder7get_rpmEv,"ax",%progbits
@@ -534,26 +534,26 @@ ARM GAS  /tmp/ccTjBFLF.s 			page 1
  444              		.file 3 "Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f334x8.h"
  445              		.file 4 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_gpio.h"
  446              		.file 5 "Core/Inc/encoder.hpp"
-ARM GAS  /tmp/ccTjBFLF.s 			page 10
+ARM GAS  /tmp/ccRKoIoI.s 			page 10
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 encoder.cpp
-     /tmp/ccTjBFLF.s:21     .text._ZN7EncoderC2EP12GPIO_TypeDeftS1_ti:00000000 $t
-     /tmp/ccTjBFLF.s:27     .text._ZN7EncoderC2EP12GPIO_TypeDeftS1_ti:00000000 _ZN7EncoderC2EP12GPIO_TypeDeftS1_ti
-     /tmp/ccTjBFLF.s:27     .text._ZN7EncoderC2EP12GPIO_TypeDeftS1_ti:00000000 _ZN7EncoderC1EP12GPIO_TypeDeftS1_ti
-     /tmp/ccTjBFLF.s:87     .text._ZN7EncoderC2EP12GPIO_TypeDeftS1_tS1_ti:00000000 $t
-     /tmp/ccTjBFLF.s:93     .text._ZN7EncoderC2EP12GPIO_TypeDeftS1_tS1_ti:00000000 _ZN7EncoderC2EP12GPIO_TypeDeftS1_tS1_ti
-     /tmp/ccTjBFLF.s:93     .text._ZN7EncoderC2EP12GPIO_TypeDeftS1_tS1_ti:00000000 _ZN7EncoderC1EP12GPIO_TypeDeftS1_tS1_ti
-     /tmp/ccTjBFLF.s:160    .text._ZN7Encoder11PinCallBackEt:00000000 $t
-     /tmp/ccTjBFLF.s:166    .text._ZN7Encoder11PinCallBackEt:00000000 _ZN7Encoder11PinCallBackEt
-     /tmp/ccTjBFLF.s:309    .text._ZN7Encoder11TimCallBackEv:00000000 $t
-     /tmp/ccTjBFLF.s:315    .text._ZN7Encoder11TimCallBackEv:00000000 _ZN7Encoder11TimCallBackEv
-     /tmp/ccTjBFLF.s:388    .text._ZN7Encoder11TimCallBackEv:00000050 $d
-     /tmp/ccTjBFLF.s:394    .text._ZN7Encoder7get_rpmEv:00000000 $t
-     /tmp/ccTjBFLF.s:400    .text._ZN7Encoder7get_rpmEv:00000000 _ZN7Encoder7get_rpmEv
-     /tmp/ccTjBFLF.s:418    .text._ZN7Encoder10get_degreeEv:00000000 $t
-     /tmp/ccTjBFLF.s:424    .text._ZN7Encoder10get_degreeEv:00000000 _ZN7Encoder10get_degreeEv
+     /tmp/ccRKoIoI.s:21     .text._ZN7EncoderC2EP12GPIO_TypeDeftS1_ti:00000000 $t
+     /tmp/ccRKoIoI.s:27     .text._ZN7EncoderC2EP12GPIO_TypeDeftS1_ti:00000000 _ZN7EncoderC2EP12GPIO_TypeDeftS1_ti
+     /tmp/ccRKoIoI.s:27     .text._ZN7EncoderC2EP12GPIO_TypeDeftS1_ti:00000000 _ZN7EncoderC1EP12GPIO_TypeDeftS1_ti
+     /tmp/ccRKoIoI.s:87     .text._ZN7EncoderC2EP12GPIO_TypeDeftS1_tS1_ti:00000000 $t
+     /tmp/ccRKoIoI.s:93     .text._ZN7EncoderC2EP12GPIO_TypeDeftS1_tS1_ti:00000000 _ZN7EncoderC2EP12GPIO_TypeDeftS1_tS1_ti
+     /tmp/ccRKoIoI.s:93     .text._ZN7EncoderC2EP12GPIO_TypeDeftS1_tS1_ti:00000000 _ZN7EncoderC1EP12GPIO_TypeDeftS1_tS1_ti
+     /tmp/ccRKoIoI.s:160    .text._ZN7Encoder11PinCallBackEt:00000000 $t
+     /tmp/ccRKoIoI.s:166    .text._ZN7Encoder11PinCallBackEt:00000000 _ZN7Encoder11PinCallBackEt
+     /tmp/ccRKoIoI.s:309    .text._ZN7Encoder11TimCallBackEv:00000000 $t
+     /tmp/ccRKoIoI.s:315    .text._ZN7Encoder11TimCallBackEv:00000000 _ZN7Encoder11TimCallBackEv
+     /tmp/ccRKoIoI.s:388    .text._ZN7Encoder11TimCallBackEv:00000050 $d
+     /tmp/ccRKoIoI.s:394    .text._ZN7Encoder7get_rpmEv:00000000 $t
+     /tmp/ccRKoIoI.s:400    .text._ZN7Encoder7get_rpmEv:00000000 _ZN7Encoder7get_rpmEv
+     /tmp/ccRKoIoI.s:418    .text._ZN7Encoder10get_degreeEv:00000000 $t
+     /tmp/ccRKoIoI.s:424    .text._ZN7Encoder10get_degreeEv:00000000 _ZN7Encoder10get_degreeEv
 
 UNDEFINED SYMBOLS
 HAL_GPIO_ReadPin
