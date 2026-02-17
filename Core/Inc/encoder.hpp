@@ -20,7 +20,8 @@ class Encoder{
     int cycle_count;
     bool useZ;
     uint16_t degree;
-    uint16_t rpm;
+    int16_t rpm;
+    uint8_t tim_callback_cunter;
     public:
     //not use Z pin
     Encoder(GPIO_TypeDef* Aport, uint16_t Apin,GPIO_TypeDef* Bport, uint16_t Bpin,int rpp);

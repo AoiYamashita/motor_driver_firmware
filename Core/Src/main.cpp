@@ -96,7 +96,7 @@ int my_id = 0;
 #define led_flip_time 150
 #define id_ch_interval 3000
 
-Encoder Enco(encoderA_GPIO_Port,encoderA_Pin,encoderB_GPIO_Port,encoderB_Pin,200);
+Encoder Enco(encoderA_GPIO_Port,encoderA_Pin,encoderB_GPIO_Port,encoderB_Pin,400);
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
   CAN_RxHeaderTypeDef rxHeader;
